@@ -3,6 +3,7 @@ from CF_dictionary import dict1
 from Azure_dictionary import dict2
 from CF_transform import transformit
 from Azure_transform import transformit2
+from U2_main import U2
 from fileMap_CF import Map
 import U1_main
 import streamlit as st
@@ -10,16 +11,17 @@ import streamlit as st
 import os
 import subprocess
 
+
+
 json_string=""
 
 # Streamlit UI
 st.title("Landing Zone Transformation")
 
 # Textarea to enter JSON string
-json_string2 = st.text_area("Enter JSON string")
+json_string2 = st.text_area("Enter JSON string (Transformation Model)")
 
-# Button to trigger the transformation
-if st.button("Transform"):
+def transform_model():
     version1 = "No reference file present"
     json_string1 = ""
     if(json_string2.find('$schema')==-1):
@@ -78,15 +80,18 @@ if st.button("Transform"):
         json_data3 = json.loads(json_string2)
 
         # Display the JSON string in a textarea
-        st.code(json.dumps(json_data3, indent=4), language='json') 
+        st.code(json.dumps(json_data3, indent=4), language='json')
+# Button to trigger the transformation
+if st.button("Transform"):
+    transform_model() 
 
-stack_name = st.text_area("Enter stack name")
+stack_name = st.text_area("Enter stack name (Use Case2)")
 def update_makefile():
     makefile_content = f""".PHONY: download-and-run
-
-download-and-run:
-\taws cloudformation get-template --stack-name {stack_name} --output json > temp1.json && python U1_main.py
-"""
+    
+	download-and-run:
+	\taws cloudformation get-template --stack-name {stack_name} --output json > temp1.json && python U1_main.py
+	"""
     # Write the updated Makefile
     with open("makefile", "w") as f:
         f.write(makefile_content)
@@ -95,8 +100,19 @@ download-and-run:
     st.write("Makefile updated with stack name: {}".format(stack_name))
     subprocess.call(['make', '-f', './makefile'])
     st.code(json.dumps(U1_main.json_data3, indent=4), language='json') 
-
+    
 if st.button("Update Makefile"):
     update_makefile()
         
 
+input_json_string = st.text_area("Enter JSON String")
+res_list_name = st.text_input("Enter name of resources")
+selected_items = [item.strip() for item in res_list_name.split(',')]
+
+def extract():
+    json_string3  = U2(input_json_string,selected_items)
+    json_data3 = json.loads(json_string3)
+    st.code(json.dumps(json_data3, indent=4), language='json') 
+    
+if st.button("Extract"):
+    extract()
