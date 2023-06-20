@@ -8,19 +8,32 @@ import sys
 with open('temp1.json') as file:
     json_data2 = json.load(file)
 
+final_string=""
+r = ["WebServerGroup","ApplicationLoadBalancer"]
 if "TemplateBody" in json_data2:
-    res_data = json_data2["TemplateBody"]["Resources"]["InstanceSecurityGroup"]
-    output_dict = {
-        "InstanceSecurityGroup": res_data
-    }
-    res_string =json.dumps(output_dict, indent=4)
-    print(res_string)
-    json_string2 = transformit(res_string)
+    for s in r :
+        print(s)
+        res_data = json_data2["Resources"][s]
+        output_dict = {
+            s: res_data
+        }
+        res_string =json.dumps(output_dict, indent=4)
+        res_string = res_string[1:-1]+","
+        final_string=final_string+res_string
+    final_string = final_string[:-1]
+    final_string= "{"+final_string+"}"
+    print(final_string)
 else:
-    res_data = json_data2["Resources"]["InstanceSecurityGroup"]
-    output_dict = {
-        "InstanceSecurityGroup": res_data
-    }
-    res_string =json.dumps(output_dict, indent=4)
-    print(res_string)
-    json_string2 = transformit(res_string)   
+    for s in r :
+        print(s)
+        res_data = json_data2["Resources"][s]
+        output_dict = {
+            s: res_data
+        }
+        res_string =json.dumps(output_dict, indent=4)
+        res_string = res_string[1:-1]+","
+        final_string=final_string+res_string
+    final_string = final_string[:-1]
+    final_string= "{"+final_string+"}"
+    print(final_string)
+json_string2 = transformit(final_string)   

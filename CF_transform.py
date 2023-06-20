@@ -1,7 +1,6 @@
 import json
 from CF_dictionary import dict1
 
-
 def transformit(json_string2):
     # Read the JSON file
     # with open('temp1.json') as file:
@@ -28,6 +27,6 @@ def transformit(json_string2):
 
     output_file = 'temp2.json'
     json_file_path = string_to_json_file(json_string2, output_file)
-    print("JSON file created as temp2.json")
+    print("Transformed template file created as temp2.json")
 
     return json_string2
