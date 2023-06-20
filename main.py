@@ -4,18 +4,13 @@ from Azure_dictionary import dict2
 from CF_transform import transformit
 from Azure_transform import transformit2
 from fileMap_CF import Map
+import U1_main
 import streamlit as st
 # import pyperclip
 import os
+import subprocess
 
 json_string=""
-
-# Read the JSON file
-# with open('temp1.json') as file:
-#     json_data2 = json.load(file)
-
-# # Convert JSON to string
-# json_string2 = json.dumps(json_data2)
 
 # Streamlit UI
 st.title("Landing Zone Transformation")
@@ -68,30 +63,6 @@ if st.button("Transform"):
             json_string2 = transformit(json_string2)
             json_data3 = json.loads(json_string2)
 
-            st.markdown(
-                """
-                <style>
-                .copyable-textarea-container {
-                    position: relative;
-                }
-                .copyable-textarea {
-                    width: 100%;
-                    height: auto;
-                    min-height: 150px;
-                    resize: vertical;
-                    padding: 10px;
-                    background-color: #f0f0f0;
-                }
-                .copy-button {
-                    position: absolute;
-                    top: 5px;
-                    right: 10px;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True
-            )
-
             # Display the textarea and copy button
             with st.container():
                 text_area = st.text_area("JSON String", value=json_string2, height=150)
@@ -101,39 +72,31 @@ if st.button("Transform"):
                 st.experimental_set_query_params(text_area)
             # Print the JSON string
             st.code(json.dumps(json_data3, indent=4), language='json')
-
+            
     else:
-
         json_string2 = transformit2(json_string2)
         json_data3 = json.loads(json_string2)
 
         # Display the JSON string in a textarea
-        st.code(json.dumps(json_data3, indent=4), language='json')
-       
-        st.markdown(
-            """
-            <style>
-            .copyable-textarea-container {
-                position: relative;
-            }
-            .copyable-textarea {
-                width: 100%;
-                height: auto;
-                min-height: 150px;
-                resize: vertical;
-                padding: 10px;
-                background-color: #f0f0f0;
-            }
-            .copy-button {
-                position: absolute;
-                top: 5px;
-                right: 10px;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        st.code(json.dumps(json_data3, indent=4), language='json') 
 
-       
+stack_name = st.text_area("Enter stack name")
+def update_makefile():
+    makefile_content = f""".PHONY: download-and-run
 
+download-and-run:
+\taws cloudformation get-template --stack-name {stack_name} --output json > temp1.json && python U1_main.py
+"""
+    # Write the updated Makefile
+    with open("makefile", "w") as f:
+        f.write(makefile_content)
+
+    # Display a confirmation message
+    st.write("Makefile updated with stack name: {}".format(stack_name))
+    subprocess.call(['make', '-f', './makefile'])
+    st.code(json.dumps(U1_main.json_data3, indent=4), language='json') 
+
+if st.button("Update Makefile"):
+    update_makefile()
+        
 
