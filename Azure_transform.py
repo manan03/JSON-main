@@ -1,8 +1,7 @@
 import json
 from Azure_dictionary import dict2
 
-
-def transformit2():
+def transformit2(json_string2):
 
     for key, value in dict2.items():
         json_string2 = json_string2.replace('"'+key+'"', '"'+value+'"')
@@ -21,6 +20,7 @@ def transformit2():
 
     output_file = 'temp2.json'
     json_file_path = string_to_json_file(json_string2, output_file)
-    print("JSON file created as temp2.json")
+    print("Azure transformed to OCI template as temp2.json")
 
     return json_string2
+   

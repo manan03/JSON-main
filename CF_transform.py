@@ -2,13 +2,6 @@ import json
 from CF_dictionary import dict1
 
 def transformit(json_string2):
-    # Read the JSON file
-    # with open('temp1.json') as file:
-    #     json_data = json.load(file)
-
-    # # Convert JSON to string
-    # json_string2 = json.dumps(json_data)
-
 
     for key, value in dict1.items():
         json_string2 = json_string2.replace('"'+key+'"', '"'+value+'"')
@@ -27,6 +20,6 @@ def transformit(json_string2):
 
     output_file = 'temp2.json'
     json_file_path = string_to_json_file(json_string2, output_file)
-    print("Transformed template file created as temp2.json")
+    print("CFT transformed to OCI template as temp2.json")
 
     return json_string2

@@ -11,7 +11,7 @@ def U2(json_string2,r):
     if "TemplateBody" in json_data2:
         for s in r :
             print(s)
-            res_data = json_data2["Resources"][s]
+            res_data = json_data2["TemplateBody"]["Resources"][s]
             output_dict = {
                 s: res_data
             }
