@@ -6,7 +6,8 @@ from Azure_transform import transformit2
 from fileMap_CF import Map
 import streamlit as st
 import os
-
+def remove_code_block():
+    st.session_state.show_code_block = False
 def u1():
     # Read the JSON file
     with open('temp1.json') as file:
@@ -44,7 +45,12 @@ def u1():
             json_data3 = json.loads(json_string2)
 
             # Display the JSON string in a textarea
-            st.code(json.dumps(json_data3, indent=4), language='json')
+            if "show_code_block" not in st.session_state:
+                st.session_state.show_code_block = True
+            if st.button("Remove Code Block"):
+                remove_code_block()
+            if st.session_state.show_code_block:
+                st.code(json.dumps(json_data3, indent=4), language='json')
         else:
             print("New")
             dict1[version1]=version2
@@ -57,4 +63,9 @@ def u1():
                 exec(f.read())
             json_string2 = transformit(json_string2)
             json_data3 = json.loads(json_string2)
-            st.code(json.dumps(json_data3, indent=4), language='json')
+            if "show_code_block" not in st.session_state:
+                st.session_state.show_code_block = True
+            if st.button("Remove Code Block"):
+                remove_code_block()
+            if st.session_state.show_code_block:
+                st.code(json.dumps(json_data3, indent=4), language='json')

@@ -20,7 +20,6 @@ def U2(json_string2,r):
             final_string=final_string+res_string
         final_string = final_string[:-1]
         final_string= "{"+final_string+"}"
-        print(final_string)
     else:
         for s in r :
             print(s)
@@ -33,6 +32,6 @@ def U2(json_string2,r):
             final_string=final_string+res_string
         final_string = final_string[:-1]
         final_string= "{"+final_string+"}"
-        print(final_string)
+
     json_string2 = transformit(final_string)   
     return json_string2

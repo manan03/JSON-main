@@ -16,7 +16,7 @@ import subprocess
 
 st.title("LANDING ZONE TRANSFORMATION")
 input_json_string2 = st.text_area("TRANSFORMATION MODEL WITH USE CASE-1 (ENTER JSON STRING)")
-
+st.session_state.show_codeblock = True
 def transform_model():
     version1 = "No reference file present"
     if(input_json_string2.find('$schema')==-1):
@@ -44,8 +44,13 @@ def transform_model():
             output_json_string2 = transformit(input_json_string2)
             json_data3 = json.loads(output_json_string2)
 
-            # Display the JSON string in a textarea
-            st.code(json.dumps(json_data3, indent=4), language='json')
+            if "show_code_block" not in st.session_state:
+                st.session_state.show_code_block = True
+            if st.button("Remove Code Block"):
+                remove_code_block()
+            if st.session_state.show_code_block:
+                st.code(json.dumps(json_data3, indent=4), language='json')
+            
         else:
             print("New")
             dict1[version1]=version2
@@ -54,20 +59,31 @@ def transform_model():
                 exec(f.read())
             output_json_string2 = transformit(input_json_string2)
             json_data3 = json.loads(output_json_string2)
-
-            st.code(json.dumps(json_data3, indent=4), language='json')
+            
+            if "show_code_block" not in st.session_state:
+                st.session_state.show_code_block = True
+            if st.button("Remove Code Block"):
+                remove_code_block()
+            if st.session_state.show_code_block:
+                st.code(json.dumps(json_data3, indent=4), language='json')
             
     else:
         output_json_string2 = transformit2(input_json_string2)
         json_data3 = json.loads(output_json_string2)
-
-        # Display the JSON string in a textarea
-        st.code(json.dumps(json_data3, indent=4), language='json')
         
+        if "show_code_block" not in st.session_state:
+            st.session_state.show_code_block = True
+        if st.button("Remove Code Block"):
+                remove_code_block()
+        if st.session_state.show_code_block:
+            st.code(json.dumps(json_data3, indent=4), language='json')
+
+def remove_code_block():
+    st.session_state.show_code_block = False
+
 # Button to trigger the transformation
 if st.button("TRANSFORM"):
     transform_model()
-
 #################### USE CASE-2 ########################
 def stack():
     get_stack_list()
