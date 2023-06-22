@@ -14,7 +14,7 @@ def get_stack_list():
         if stack_names:
             st.write("Running Stacks:")
             for stack_name in stack_names:
-                st.write(stack_name)
+                st.code(stack_name)
         else:
             st.write("No running stacks found.")
         # return stack_names
