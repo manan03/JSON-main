@@ -3,13 +3,13 @@ from CF_dictionary import dict1
 from Azure_dictionary import dict2
 from CF_transform import transformit
 from Azure_transform import transformit2
-import sys
 
-def U2(json_string2,r):
+
+def usecase_2(json_string2,stack_list):
     json_data2 = json.loads(json_string2)
     final_string=""
     if "TemplateBody" in json_data2:
-        for s in r :
+        for s in stack_list :
             print(s)
             res_data = json_data2["TemplateBody"]["Resources"][s]
             output_dict = {
@@ -21,7 +21,7 @@ def U2(json_string2,r):
         final_string = final_string[:-1]
         final_string= "{"+final_string+"}"
     else:
-        for s in r :
+        for s in stack_list :
             print(s)
             res_data = json_data2["Resources"][s]
             output_dict = {
