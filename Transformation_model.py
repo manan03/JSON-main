@@ -67,5 +67,7 @@ def transform_model(input_json_string2):
         
         if "show_code_block" not in st.session_state:
             st.session_state.show_code_block = True
+        st.download_button('_Download as file_', output_json_string2)
         if st.session_state.show_code_block:
-            st.code(json.dumps(json_data3, indent=4), language='json')
+            with st.expander("See explanation"):
+                st.code(json.dumps(json_data3, indent=4), language='json')
